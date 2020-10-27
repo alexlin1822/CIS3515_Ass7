@@ -62,6 +62,36 @@ public class PageControlFragment extends Fragment {
         // Inflate the layout for this fragment
         final View myFragmentView =inflater.inflate(R.layout.fragment_page_control, container, false);
 
+//        private ImageButton[] btn = new ImageButton[3];
+//        private EditText txtURL;
+//        private int[] btn_id = {R.id.btnGo, R.id.btnBack, R.id.btnNext};
+
+//           EditText txtURL=(EditText)getActivity().findViewById(R.id.txtURL);
+//           ImageButton btnGo=(ImageButton)myFragmentView.findViewById(R.id.btnGo);
+//           btnGo.setOnClickListener(new View.OnClickListener() {
+//               @Override
+//               public void onClick(View view) {
+//                   listener.OnClick(view.getId());
+//               }
+//           });
+
+
+//                @Override
+//                public void onClick(View view) {
+//                    listener.OnClick(view.getId());
+//                }
+//
+//        for(int i = 0; i < btn.length; i++){
+//            btn[i] = (ImageButton) getActivity().findViewById(btn_id[i]);
+//            btn[i].setOnClickListener(new View.OnClickListener(){
+//                @Override
+//                public void onClick(View view) {
+//                    listener.OnClick(view.getId());
+//                }
+//            });
+//        }
+
+
         return  myFragmentView;
     }
 
