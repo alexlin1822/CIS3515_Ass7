@@ -17,9 +17,8 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="URL"
-            android:inputType="textPersonName"
-            android:text="www.google.com" />
+            android:hint="Please enter your url"
+            android:inputType="textPersonName" />
 
         <ImageButton
             android:id="@+id/btnGo"

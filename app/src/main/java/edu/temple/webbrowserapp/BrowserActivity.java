@@ -26,7 +26,8 @@ public class BrowserActivity extends AppCompatActivity
     public void onConfigurationChanged (Configuration newConfig){
         super.onConfigurationChanged(newConfig);
         setContentView(R.layout.activity_browser);
-        SetViewsAndListener();
+        //SetViewsAndListener();
+       // frViewer.LoadPageFromURL("https://temple.edu");
 
     }
 
@@ -48,20 +49,23 @@ public class BrowserActivity extends AppCompatActivity
 
     }
 
+    //ControlFragment Button Click
     @Override
     public void OnClick(int btnID) {
         switch (btnID) {
-            case R.id.btnGo:Toast.makeText(this, "1", Toast.LENGTH_LONG).show();
+            case R.id.btnGo:{
+                frViewer.LoadPageFromURL(frControl.getURL());
                 break;
+                }
             case R.id.btnBack:Toast.makeText(this, "2", Toast.LENGTH_LONG).show();
                 break;
             case R.id.btnNext:Toast.makeText(this, "3", Toast.LENGTH_LONG).show();
                 break;
-
         }
 
     }
 
+    //ViewerFragment OnPageChange
     @Override
     public void OnPageChangeURL(String sURL) {
         frControl.setURL(sURL);

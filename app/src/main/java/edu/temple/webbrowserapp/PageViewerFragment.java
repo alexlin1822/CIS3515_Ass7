@@ -51,9 +51,10 @@ public class PageViewerFragment extends Fragment {
         // Inflate the layout for this fragment
         final View myFragmentView =inflater.inflate(R.layout.fragment_page_viewer, container, false);
 
-        weburl="https://www.google.com";
+
         wbMain=(WebView)myFragmentView.findViewById(R.id.wbMain);
-        wbMain.loadUrl(weburl);
+//        weburl="https://www.google.com";
+//        wbMain.loadUrl(weburl);
         wbMain.addJavascriptInterface(this,"android");
         wbMain.setWebViewClient(webViewClient);
 
@@ -76,21 +77,19 @@ public class PageViewerFragment extends Fragment {
         //Load page
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            if (listener!=null){
-                listener.OnPageChangeURL(url);}
+            if (listener!=null){listener.OnPageChangeURL(url);}
         }
-
-//        @Override
-//        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//            Log.i("ansen","拦截url:"+url);
-//            if(url.equals("http://www.google.com/")){
-//                //Toast.makeText(MainActivity.this,"国内不能访问google,拦截该url",Toast.LENGTH_LONG).show();
-//                return true;//表示我已经处理过了
-//            }
-//            return super.shouldOverrideUrlLoading(view, url);
-//        }
-
     };
+
+    public void LoadPageFromURL(String sURL){
+        weburl=sURL;
+        wbMain.loadUrl(weburl);
+    }
+
+    public void BackNext(int iBtn){
+
+    }
+
 
 
 }

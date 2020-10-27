@@ -68,6 +68,21 @@ public class PageControlFragment extends Fragment {
     public void setURL(String sURL){
         txtURL.setText(sURL);
     }
+
+    public String getURL(){
+        String sTmp=txtURL.getText().toString();
+        if (sTmp.length()==0){
+            sTmp="";
+        }
+        else if (sTmp.length()<8){
+            sTmp="https://"+sTmp;
+        }
+        else if (!sTmp.substring(0,8).toLowerCase().equals("https://")){
+            sTmp="https://"+sTmp;
+        }
+        txtURL.setText(sTmp);
+        return sTmp;
+    }
 }
 
 
