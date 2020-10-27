@@ -31,17 +31,26 @@ public class PageViewerFragment extends Fragment {
         void OnPageChangeURL(String sURL);
     }
 
+    private String sgURL;
+
     public PageViewerFragment() {
         // Required empty public constructor
     }
 
-    public static PageViewerFragment newInstance() {
-        return new PageViewerFragment();
+    public static PageViewerFragment newInstance(String param1) {
+        PageViewerFragment fragment = new PageViewerFragment();
+        Bundle args = new Bundle();
+        args.putString("sgURL", param1);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            sgURL = getArguments().getString("sgURL");
+        }
     }
 
     @SuppressLint("JavascriptInterface")
@@ -53,8 +62,7 @@ public class PageViewerFragment extends Fragment {
 
 
         wbMain=(WebView)myFragmentView.findViewById(R.id.wbMain);
-//        weburl="https://www.google.com";
-//        wbMain.loadUrl(weburl);
+
         wbMain.addJavascriptInterface(this,"android");
         wbMain.setWebViewClient(webViewClient);
 
@@ -64,6 +72,8 @@ public class PageViewerFragment extends Fragment {
 
         webSettings.setSupportZoom(true);
         webSettings.setBuiltInZoomControls(true);
+        if (!sgURL.equals(""))
+            wbMain.loadUrl(sgURL);
         return  myFragmentView;
     }
 
@@ -83,12 +93,14 @@ public class PageViewerFragment extends Fragment {
 
     public void LoadPageFromURL(String sURL){
         weburl=sURL;
+        if (wbMain!=null)
         wbMain.loadUrl(weburl);
     }
 
     public void BackNext(int iBtn){
 
     }
+
 
 
 

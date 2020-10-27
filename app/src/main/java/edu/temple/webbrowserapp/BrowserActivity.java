@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -14,46 +15,42 @@ public class BrowserActivity extends AppCompatActivity
     private PageControlFragment frControl;
     private PageViewerFragment frViewer;
     private FragmentManager fm;
-    private String sgURL;
+    private String sgURL,myStat;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
-        SetViewsAndListener();
 
-        if(savedInstanceState!=null){
-            sgURL=savedInstanceState.get("CurrentURL").toString();
-        }else {
-            sgURL = "";
+        if (savedInstanceState!=null) {
+            myStat = savedInstanceState.getString("myStat");
+            sgURL=savedInstanceState.getString("CurrentURL");
         }
-    }
+        else {
+            myStat="0";
+            sgURL="";
+        }
 
-    @Override
-    public void onConfigurationChanged (Configuration newConfig){
-        super.onConfigurationChanged(newConfig);
-        setContentView(R.layout.activity_browser);
-        SetViewsAndListener();
-//        if (!sgURL.equals("")){
-//            frViewer.LoadPageFromURL(sgURL);
-//        }
-
-
-
-    }
-
-    public void SetViewsAndListener(){
         fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-
         frControl = PageControlFragment.newInstance();
-        frViewer = PageViewerFragment.newInstance();
+        frViewer = PageViewerFragment.newInstance(sgURL);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.frmControl,frControl,"frControl")
-                .add(R.id.frmViewer,frViewer,"frViewer")
-                .commit();
+        if (myStat.equals("0")) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.frmControl, frControl, "frControl")
+                    .add(R.id.frmViewer, frViewer, "frViewer")
+                    .commit();
+        }
+        else{
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frmControl, frControl, "frControl")
+                    .replace(R.id.frmViewer, frViewer, "frViewer")
+                    .commit();
+        }
         frControl.addButtonClickListener(this);
         frViewer.addOnPageChangeURListener(this);
         fragmentTransaction.commit();
@@ -87,12 +84,14 @@ public class BrowserActivity extends AppCompatActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("CurrentURL",sgURL);
+        outState.putString("myStat","1");
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         sgURL=savedInstanceState.getString("CurrentURL");
+        myStat=savedInstanceState.getString("myStat");
     }
 
 }
