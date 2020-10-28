@@ -60,16 +60,11 @@ public class BrowserActivity extends AppCompatActivity
     //ControlFragment Button Click
     @Override
     public void OnClick(int btnID) {
-        switch (btnID) {
-            case R.id.btnGo:{
-                sgURL=frControl.getURL();
-                frViewer.LoadPageFromURL(sgURL);
-                break;
-                }
-            case R.id.btnBack:Toast.makeText(this, "2", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.btnNext:Toast.makeText(this, "3", Toast.LENGTH_LONG).show();
-                break;
+        if (btnID==R.id.btnGo) {
+            sgURL = frControl.getURL();
+            frViewer.LoadPageFromURL(sgURL);
+        }else{
+            frViewer.BackNext(btnID);
         }
     }
 

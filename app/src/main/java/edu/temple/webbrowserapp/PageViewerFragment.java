@@ -20,6 +20,7 @@ public class PageViewerFragment extends Fragment {
     private WebView wbMain;
     private WebSettings webSettings;
     private String weburl;
+    private View myFragmentView;
 
     //interface
     private PageViewerFragment.OnPageChangeURLListener listener;
@@ -48,6 +49,7 @@ public class PageViewerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         if (getArguments() != null) {
             sgURL = getArguments().getString("sgURL");
         }
@@ -58,8 +60,16 @@ public class PageViewerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View myFragmentView =inflater.inflate(R.layout.fragment_page_viewer, container, false);
+        //final View myFragmentView =inflater.inflate(R.layout.fragment_page_viewer, container, false);
 
+        if(myFragmentView==null){
+            myFragmentView=inflater.inflate(R.layout.fragment_page_viewer, null);
+        }
+
+        ViewGroup parent = (ViewGroup) myFragmentView.getParent();
+        if (parent != null) {
+            parent.removeView(myFragmentView);
+        }
 
         wbMain=(WebView)myFragmentView.findViewById(R.id.wbMain);
 
@@ -98,6 +108,17 @@ public class PageViewerFragment extends Fragment {
     }
 
     public void BackNext(int iBtn){
+        switch (iBtn){
+            case R.id.btnBack:{
+                wbMain.goBack();
+            }
+                break;
+
+            case R.id.btnNext:{
+                wbMain.goForward();
+            }
+                break;
+        }
 
     }
 

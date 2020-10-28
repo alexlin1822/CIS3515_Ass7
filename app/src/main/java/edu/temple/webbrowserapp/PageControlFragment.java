@@ -36,6 +36,8 @@ public class PageControlFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);//保留Fragment
+
     }
 
 
