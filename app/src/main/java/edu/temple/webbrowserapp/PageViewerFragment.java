@@ -16,10 +16,9 @@ import java.net.MalformedURLException;
 
 
 public class PageViewerFragment extends Fragment {
+    //var
     private WebView wbMain;
     private WebSettings webSettings;
-    private String weburl;
-    private String sgURL;
 
     //interface
     private PageViewerFragment.OnPageChangeURLListener listener;
@@ -47,9 +46,6 @@ public class PageViewerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if (getArguments() != null) {
-            sgURL = getArguments().getString("sgURL");
-        }
     }
 
     @SuppressLint("JavascriptInterface")
@@ -89,9 +85,8 @@ public class PageViewerFragment extends Fragment {
     };
 
     public void LoadPageFromURL(String sURL) throws MalformedURLException {
-        weburl=sURL;
         if (wbMain!=null)
-            wbMain.loadUrl(weburl);
+            wbMain.loadUrl(sURL);
     }
 
     public void BackNext(int iBtn){
