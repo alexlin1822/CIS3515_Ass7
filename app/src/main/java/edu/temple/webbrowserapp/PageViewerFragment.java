@@ -1,26 +1,25 @@
 package edu.temple.webbrowserapp;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
+import java.net.MalformedURLException;
+
 
 public class PageViewerFragment extends Fragment {
     private WebView wbMain;
     private WebSettings webSettings;
     private String weburl;
-    private View myFragmentView;
+    private String sgURL;
 
     //interface
     private PageViewerFragment.OnPageChangeURLListener listener;
@@ -31,8 +30,6 @@ public class PageViewerFragment extends Fragment {
     public interface  OnPageChangeURLListener{
         void OnPageChangeURL(String sURL);
     }
-
-    private String sgURL;
 
     public PageViewerFragment() {
         // Required empty public constructor
@@ -60,16 +57,7 @@ public class PageViewerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //final View myFragmentView =inflater.inflate(R.layout.fragment_page_viewer, container, false);
-
-        if(myFragmentView==null){
-            myFragmentView=inflater.inflate(R.layout.fragment_page_viewer, null);
-        }
-
-        ViewGroup parent = (ViewGroup) myFragmentView.getParent();
-        if (parent != null) {
-            parent.removeView(myFragmentView);
-        }
+        final View myFragmentView =inflater.inflate(R.layout.fragment_page_viewer, container, false);
 
         wbMain=(WebView)myFragmentView.findViewById(R.id.wbMain);
 
@@ -79,20 +67,19 @@ public class PageViewerFragment extends Fragment {
         webSettings=wbMain.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-
         webSettings.setSupportZoom(true);
         webSettings.setBuiltInZoomControls(true);
-        if (!sgURL.equals(""))
-            wbMain.loadUrl(sgURL);
+
+        if(savedInstanceState != null){
+            wbMain.restoreState(savedInstanceState);
+        }
         return  myFragmentView;
     }
 
     private WebViewClient webViewClient=new WebViewClient(){
         //finished
         @Override
-        public void onPageFinished(WebView view, String url) {
-
-        }
+        public void onPageFinished(WebView view, String url) {}
 
         //Load page
         @Override
@@ -101,28 +88,27 @@ public class PageViewerFragment extends Fragment {
         }
     };
 
-    public void LoadPageFromURL(String sURL){
+    public void LoadPageFromURL(String sURL) throws MalformedURLException {
         weburl=sURL;
         if (wbMain!=null)
-        wbMain.loadUrl(weburl);
+            wbMain.loadUrl(weburl);
     }
 
     public void BackNext(int iBtn){
-        switch (iBtn){
-            case R.id.btnBack:{
+        if (iBtn==R.id.btnBack) {
+            if (wbMain.canGoBack()) {
                 wbMain.goBack();
             }
-                break;
-
-            case R.id.btnNext:{
+        }
+        else if (iBtn==R.id.btnNext){
+            if (wbMain.canGoForward()) {
                 wbMain.goForward();
             }
-                break;
         }
-
     }
 
-
-
-
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        wbMain.saveState(outState);
+    }
 }

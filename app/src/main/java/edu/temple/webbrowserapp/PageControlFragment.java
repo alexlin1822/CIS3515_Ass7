@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,10 +35,8 @@ public class PageControlFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);//保留Fragment
-
+        setRetainInstance(true);
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -73,15 +70,13 @@ public class PageControlFragment extends Fragment {
 
     public String getURL(){
         String sTmp=txtURL.getText().toString();
-        if (sTmp.length()==0){
-            sTmp="";
-        }
-        else if (sTmp.length()<8){
+        if (sTmp.equals("")) {return sTmp;}
+
+        if (!sTmp.toLowerCase().contains("https://") &&
+                !sTmp.toLowerCase().contains("http://")) {
             sTmp="https://"+sTmp;
         }
-        else if (!sTmp.substring(0,8).toLowerCase().equals("https://")){
-            sTmp="https://"+sTmp;
-        }
+
         txtURL.setText(sTmp);
         return sTmp;
     }

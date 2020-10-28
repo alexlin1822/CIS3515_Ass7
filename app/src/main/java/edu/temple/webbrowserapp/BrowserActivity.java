@@ -1,21 +1,18 @@
 package edu.temple.webbrowserapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.annotation.SuppressLint;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.widget.Toast;
+
+import java.net.MalformedURLException;
 
 public class BrowserActivity extends AppCompatActivity
         implements PageControlFragment.OnClickListener,PageViewerFragment.OnPageChangeURLListener
 {
     private PageControlFragment frControl;
     private PageViewerFragment frViewer;
-    private FragmentManager fm;
-    private String sgURL,myStat;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -23,70 +20,54 @@ public class BrowserActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
 
-        if (savedInstanceState!=null) {
-            myStat = savedInstanceState.getString("myStat");
-            sgURL=savedInstanceState.getString("CurrentURL");
-        }
-        else {
-            myStat="0";
-            sgURL="";
-        }
+        FragmentManager fm = getSupportFragmentManager();
+        frControl = (PageControlFragment) fm.findFragmentById(R.id.frmControl);
+        frViewer = (PageViewerFragment) fm.findFragmentById(R.id.frmViewer);
 
-        fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        frControl = PageControlFragment.newInstance();
-        frViewer = PageViewerFragment.newInstance(sgURL);
-
-        if (myStat.equals("0")) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.frmControl, frControl, "frControl")
-                    .add(R.id.frmViewer, frViewer, "frViewer")
-                    .commit();
+        if(frControl == null){
+            frControl = PageControlFragment.newInstance();
+            fm.beginTransaction().add(R.id.frmControl,frControl).commit();
+            frControl.addButtonClickListener(this);
         }
-        else{
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frmControl, frControl, "frControl")
-                    .replace(R.id.frmViewer, frViewer, "frViewer")
-                    .commit();
+        if(frViewer == null){
+            frViewer = PageViewerFragment.newInstance("");
+            fm.beginTransaction().add(R.id.frmViewer,frViewer).commit();
+            frViewer.addOnPageChangeURListener(this);
         }
-        frControl.addButtonClickListener(this);
-        frViewer.addOnPageChangeURListener(this);
-        fragmentTransaction.commit();
-
     }
 
     //ControlFragment Button Click
     @Override
-    public void OnClick(int btnID) {
+    public void OnClick(int btnID){
         if (btnID==R.id.btnGo) {
-            sgURL = frControl.getURL();
-            frViewer.LoadPageFromURL(sgURL);
+            LoadWeb(frControl.getURL());
         }else{
             frViewer.BackNext(btnID);
+        }
+    }
+
+    //try to load the page
+    public void LoadWeb(String sURL) {
+        try {
+            frViewer.LoadPageFromURL(sURL);
+        }
+        catch(MalformedURLException q) {
+            q.printStackTrace();
         }
     }
 
     //ViewerFragment OnPageChange
     @Override
     public void OnPageChangeURL(String sURL) {
-        sgURL=sURL;
         frControl.setURL(sURL);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("CurrentURL",sgURL);
-        outState.putString("myStat","1");
+        outState.putAll(outState);
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        sgURL=savedInstanceState.getString("CurrentURL");
-        myStat=savedInstanceState.getString("myStat");
-    }
+
 
 }
