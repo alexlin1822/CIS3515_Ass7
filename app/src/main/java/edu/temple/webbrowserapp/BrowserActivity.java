@@ -39,6 +39,7 @@ public class BrowserActivity extends AppCompatActivity
     //ControlFragment Button Click
     @Override
     public void OnClick(int btnID){
+        // click go
         if (btnID==R.id.btnGo) {
             LoadWeb(frControl.getURL());
         }else{
