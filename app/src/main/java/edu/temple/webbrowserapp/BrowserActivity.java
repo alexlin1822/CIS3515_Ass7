@@ -21,17 +21,17 @@ public class BrowserActivity extends AppCompatActivity
         setContentView(R.layout.activity_browser);
 
         FragmentManager fm = getSupportFragmentManager();
-        frControl = (PageControlFragment) fm.findFragmentById(R.id.frmControl);
-        frViewer = (PageViewerFragment) fm.findFragmentById(R.id.frmViewer);
+        frControl = (PageControlFragment) fm.findFragmentById(R.id.frmPageCtrl);
+        frViewer = (PageViewerFragment) fm.findFragmentById(R.id.frmPageDisp);
 
         if(frControl == null){
             frControl = PageControlFragment.newInstance();
-            fm.beginTransaction().add(R.id.frmControl,frControl).commit();
+            fm.beginTransaction().add(R.id.frmPageCtrl,frControl).commit();
             frControl.addButtonClickListener(this);
         }
         if(frViewer == null){
             frViewer = PageViewerFragment.newInstance("");
-            fm.beginTransaction().add(R.id.frmViewer,frViewer).commit();
+            fm.beginTransaction().add(R.id.frmPageDisp,frViewer).commit();
             frViewer.addOnPageChangeURListener(this);
         }
     }

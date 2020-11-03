@@ -6,13 +6,20 @@ android:layout_height="match_parent"
 android:orientation="vertical"
 tools:context=".BrowserActivity">
 
-<FrameLayout
-    android:id="@+id/frmControl"
+    <FrameLayout
+        android:id="@+id/frmBrowserCtrl"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+    </FrameLayout>
+
+    <FrameLayout
+    android:id="@+id/frmPageCtrl"
     android:layout_width="match_parent"
     android:layout_height="50dp" />
 
 <FrameLayout
-    android:id="@+id/frmViewer"
+    android:id="@+id/frmPageDisp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
