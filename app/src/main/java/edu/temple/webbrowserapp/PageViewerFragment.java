@@ -14,8 +14,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import java.net.MalformedURLException;
 
+/////////////////////////////OLD ONE
 
 public class PageViewerFragment extends Fragment {
+
     //var
     private WebView wbMain;
     private WebSettings webSettings;
