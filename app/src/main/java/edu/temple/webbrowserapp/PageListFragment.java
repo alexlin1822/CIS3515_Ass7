@@ -2,6 +2,7 @@ package edu.temple.webbrowserapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,8 +15,6 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class PageListFragment extends Fragment {
-
-
     public void addSelectListener(OnItemSelectedListener listener){
         this.listener = listener;
     }
@@ -23,6 +22,7 @@ public class PageListFragment extends Fragment {
     public interface OnItemSelectedListener{
         void onItemSelected(int iID);
     }
+
     private OnItemSelectedListener listener;
 
     private ArrayList<String> lstgWebTitle;
@@ -53,7 +53,12 @@ public class PageListFragment extends Fragment {
         // Inflate the layout for this fragment
         final View myFragmentView =inflater.inflate(R.layout.fragment_page_list, container, false);
 
-        lstgWebTitle = getArguments().getStringArrayList("WebTitle");
+        if (savedInstanceState!=null){
+            lstgWebTitle=savedInstanceState.getStringArrayList("lstgWebTitle");
+        }
+        else {
+            lstgWebTitle = getArguments().getStringArrayList("WebTitle");
+        }
 
         lstPage=(ListView) myFragmentView.findViewById(R.id.lstPage);
         lstPage.setAdapter(new ArrayAdapter<>( getActivity(), android.R.layout.simple_list_item_1,lstgWebTitle));
@@ -67,5 +72,14 @@ public class PageListFragment extends Fragment {
         });
 
         return  myFragmentView;
+    }
+
+    public void UpdateList(ArrayList<String> lstWebTitle){
+        lstgWebTitle=lstWebTitle;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putStringArrayList("lstgWebTitle", lstgWebTitle);
     }
 }

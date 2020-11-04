@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-
 public class BrowserControlFragment extends Fragment {
     private ImageButton btnNew;
 

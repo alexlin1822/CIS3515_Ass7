@@ -6,14 +6,17 @@ import androidx.fragment.app.FragmentManager;
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class BrowserActivity extends AppCompatActivity
         implements PageControlFragment.OnClickListener,
-            PageViewerFragment.OnPageChangeURLListener,
-            BrowserControlFragment.OnNewButtonClickListener
+            BrowserControlFragment.OnNewButtonClickListener,
+            PageListFragment.OnItemSelectedListener,
+            PagerFragment.OnChangeListener
 {
 
     //private PageViewerFragment frViewer;
@@ -53,7 +56,7 @@ public class BrowserActivity extends AppCompatActivity
         if(frPager == null){
             frPager = PagerFragment.newInstance();
             fm.beginTransaction().add(R.id.frmPageDisp,frPager).commit();
-            //frBrowserCtrl.addOnPageChangeURListener(this);
+            frPager.addOnChangeListener(this);
         }
 
 
@@ -68,7 +71,7 @@ public class BrowserActivity extends AppCompatActivity
             if(frPageList == null){
                 frPageList = PageListFragment.newInstance(arrTest);
                 fm.beginTransaction().add(R.id.frmPageList,frPageList).commit();
-                //frBrowserCtrl.addOnPageChangeURListener(this);
+                frPageList.addSelectListener(this);
             }
         }
     }
@@ -84,10 +87,45 @@ public class BrowserActivity extends AppCompatActivity
         }
     }
 
-    //ViewerFragment OnPageChange
+//    //ViewerFragment OnPageChange
+//    @Override
+//    public void OnPageChangeURL(String sURL) {
+//        frPageControl.setURL(sURL);
+//    }
+//
+//    @Override
+//    public void OnPageFinish(String sTitle) {
+//        Toast.makeText(getApplicationContext(),"OnPageFinish",Toast.LENGTH_LONG);
+//        getSupportActionBar().setTitle(sTitle);
+//        frPager.setCurrentWebTitle(sTitle);
+//        if (frPageList!=null) {
+//            frPageList.UpdateList(frPager.getWebTitleList());
+//        }
+//    }
+
     @Override
-    public void OnPageChangeURL(String sURL) {
-        //frPageControl.setURL(sURL);
+    public void OnPagerPageChangeURL(String sURL) {
+        frPageControl.setURL(sURL);
+    }
+
+    @Override
+    public void OnPagerPageFinish(String sTitle) {
+        //Toast.makeText(getApplicationContext(),"OnPageFinish",Toast.LENGTH_LONG);
+        getSupportActionBar().setTitle(sTitle);
+        frPager.setCurrentWebTitle(sTitle);
+        if (frPageList!=null) {
+            frPageList.UpdateList(frPager.getWebTitleList());
+        }
+    }
+
+    @Override
+    public void OnNewButtonClick() {
+        frPager.AddFragment();
+    }
+
+    @Override
+    public void onItemSelected(int iID) {
+        frPager.setCurrentFragment(iID);
     }
 
     @Override
@@ -96,8 +134,5 @@ public class BrowserActivity extends AppCompatActivity
         outState.putAll(outState);
     }
 
-    @Override
-    public void OnNewButtonClick() {
-        frPager.AddFragment();
-    }
+
 }

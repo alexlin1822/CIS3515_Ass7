@@ -26,6 +26,7 @@ public class PageViewerFragment extends Fragment {
 
     public interface  OnPageChangeURLListener{
         void OnPageChangeURL(String sURL);
+        void OnPageFinish(String sTitle);
     }
 
     public PageViewerFragment() {
@@ -76,7 +77,10 @@ public class PageViewerFragment extends Fragment {
     private WebViewClient webViewClient=new WebViewClient(){
         //finished
         @Override
-        public void onPageFinished(WebView view, String url) {}
+        public void onPageFinished(WebView view, String url) {
+            if (listener!=null){listener.OnPageFinish(view.getTitle());}
+
+        }
 
         //Load page
         @Override
