@@ -2,11 +2,22 @@ package edu.temple.webbrowserapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,34 +26,21 @@ import android.view.ViewGroup;
  */
 public class PagerFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private ViewPager2 vp2Pager;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ArrayList<PageViewerFragment> arrgWeb;
+
 
     public PagerFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PagerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PagerFragment newInstance(String param1, String param2) {
+    public static PagerFragment newInstance() {
         PagerFragment fragment = new PagerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putStringArrayList("WebContent",arrWeb);
+////        args.putSerializable("WebContent", (Serializable) arrWeb);
+//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -50,15 +48,81 @@ public class PagerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            Bundle b = getIntent().getExtras();
+//            ArrayList<ObjectName> q = (ArrayList<ObjectName>) b.getSerializable("objNames");
         }
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pager, container, false);
+        View view= inflater.inflate(R.layout.fragment_pager, container, false);
+        vp2Pager = view.findViewById(R.id.vp2Pager);
+
+        arrgWeb = new ArrayList<>();
+        arrgWeb.add(new PageViewerFragment());
+        arrgWeb.add(new PageViewerFragment());
+        arrgWeb.add(new PageViewerFragment());
+
+        vp2Pager.setAdapter(new ViewPagerFragmentStateAdapter(this.getActivity(),arrgWeb));
+//        ArrayList<String> books=new ArrayList<>();// = getArguments().getStringArrayList("WebContent");
+//        books.add("Book1");
+//        books.add("Book2");
+//        pagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+//            @Override
+//            public int getCount() {
+//                return 0;
+//            }
+//
+//            @NonNull
+//            @Override
+//            public Fragment getItem(int position) {
+//                return PageViewerFragment.newInstance("http://www.google.com");
+//            }
+//        };
+
+
+        return  view;
     }
+
+    public class ViewPagerFragmentStateAdapter extends FragmentStateAdapter {
+        ArrayList<PageViewerFragment> arrMyWeb;
+        public ViewPagerFragmentStateAdapter(@NonNull FragmentActivity fragmentActivity,ArrayList<PageViewerFragment> arrWeb) {
+            super(fragmentActivity);
+            this.arrMyWeb=arrWeb;
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            //return PageViewerFragment.newInstance(Integer.toString(position) );
+            return arrMyWeb.get(position);
+        }
+        @Override
+        public int getItemCount() {
+            return arrMyWeb.size();
+        }
+    }
+
+
+//    private class PagerAdapter extends FragmentPagerAdapter {
+//        ArrayList<String> books;
+//        public PagerAdapter(FragmentManager myFragment) {
+//            super(myFragment);
+//            //this.books=books;
+//        }
+//
+//
+//        @Override
+//        public Fragment getItem(int position) {
+//            return PageViewerFragment.newInstance("www.google.com");
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return books.size();
+//        }
+//    }
 }

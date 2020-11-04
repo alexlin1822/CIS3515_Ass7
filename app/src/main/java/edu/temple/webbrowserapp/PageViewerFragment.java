@@ -71,6 +71,9 @@ public class PageViewerFragment extends Fragment {
         if(savedInstanceState != null){
             wbMain.restoreState(savedInstanceState);
         }
+
+        wbMain.loadUrl("https://www.google.com");
+
         return  myFragmentView;
     }
 

@@ -52,7 +52,7 @@ public class BrowserActivity extends AppCompatActivity
         }
 
         if(frPager == null){
-            frPager = PagerFragment.newInstance("","");
+            frPager = PagerFragment.newInstance();
             fm.beginTransaction().add(R.id.frmPageDisp,frPager).commit();
             //frBrowserCtrl.addOnPageChangeURListener(this);
         }
