@@ -15,8 +15,10 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 /**
@@ -28,6 +30,7 @@ public class PagerFragment extends Fragment {
 
     private ViewPager2 vp2Pager;
 
+    ArrayList<String> arrgWebTitle;
     ArrayList<PageViewerFragment> arrgWeb;
 
 
@@ -47,13 +50,11 @@ public class PagerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         if (getArguments() != null) {
-//            Bundle b = getIntent().getExtras();
-//            ArrayList<ObjectName> q = (ArrayList<ObjectName>) b.getSerializable("objNames");
+
         }
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,29 +62,13 @@ public class PagerFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_pager, container, false);
         vp2Pager = view.findViewById(R.id.vp2Pager);
 
+
         arrgWeb = new ArrayList<>();
         arrgWeb.add(new PageViewerFragment());
         arrgWeb.add(new PageViewerFragment());
         arrgWeb.add(new PageViewerFragment());
 
         vp2Pager.setAdapter(new ViewPagerFragmentStateAdapter(this.getActivity(),arrgWeb));
-//        ArrayList<String> books=new ArrayList<>();// = getArguments().getStringArrayList("WebContent");
-//        books.add("Book1");
-//        books.add("Book2");
-//        pagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
-//            @Override
-//            public int getCount() {
-//                return 0;
-//            }
-//
-//            @NonNull
-//            @Override
-//            public Fragment getItem(int position) {
-//                return PageViewerFragment.newInstance("http://www.google.com");
-//            }
-//        };
-
-
         return  view;
     }
 
@@ -107,22 +92,32 @@ public class PagerFragment extends Fragment {
     }
 
 
-//    private class PagerAdapter extends FragmentPagerAdapter {
-//        ArrayList<String> books;
-//        public PagerAdapter(FragmentManager myFragment) {
-//            super(myFragment);
-//            //this.books=books;
-//        }
-//
-//
-//        @Override
-//        public Fragment getItem(int position) {
-//            return PageViewerFragment.newInstance("www.google.com");
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return books.size();
-//        }
-//    }
+    public ArrayList<String> getWebTitleList(){
+        return arrgWebTitle;
+    }
+
+
+    public void LoadPageFromURL(String sURL) {
+        PageViewerFragment pvfCurrent;
+        pvfCurrent = arrgWeb.get(vp2Pager.getCurrentItem());
+
+        try {
+            pvfCurrent.LoadPageFromURL(sURL);
+        }
+        catch(MalformedURLException q) {
+            q.printStackTrace();
+        }
+    }
+
+    public void BackNext(int iBtn){
+        PageViewerFragment pvfCurrent;
+        pvfCurrent = arrgWeb.get(vp2Pager.getCurrentItem());
+        pvfCurrent.BackNext(iBtn);
+    }
+
+    public void AddFragment(){
+        arrgWeb.add(new PageViewerFragment());
+        vp2Pager.setCurrentItem(arrgWeb.size()-1);
+
+    }
 }

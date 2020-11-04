@@ -11,7 +11,9 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class BrowserActivity extends AppCompatActivity
-        implements PageControlFragment.OnClickListener,PageViewerFragment.OnPageChangeURLListener
+        implements PageControlFragment.OnClickListener,
+            PageViewerFragment.OnPageChangeURLListener,
+            BrowserControlFragment.OnNewButtonClickListener
 {
 
     //private PageViewerFragment frViewer;
@@ -29,10 +31,7 @@ public class BrowserActivity extends AppCompatActivity
         setContentView(R.layout.activity_browser);
 
         ArrayList<String> arrTest=new ArrayList<>();
-        ///for test
-        for (int i = 1; i < 15; i++) {
-            arrTest.add("BookCase"+i);
-        }
+
 
         FragmentManager fm = getSupportFragmentManager();
         frPageControl = (PageControlFragment) fm.findFragmentById(R.id.frmPageCtrl);
@@ -42,13 +41,13 @@ public class BrowserActivity extends AppCompatActivity
         if(frPageControl == null){
             frPageControl = PageControlFragment.newInstance();
             fm.beginTransaction().add(R.id.frmPageCtrl,frPageControl).commit();
-            //frPageControl.addButtonClickListener(this);
+            frPageControl.addButtonClickListener(this);
         }
 
         if(frBrowserCtrl == null){
             frBrowserCtrl = BrowserControlFragment.newInstance();
             fm.beginTransaction().add(R.id.frmBrowserCtrl,frBrowserCtrl).commit();
-            //frBrowserCtrl.addOnPageChangeURListener(this);
+            frBrowserCtrl.addNewButtonListener(this);
         }
 
         if(frPager == null){
@@ -77,22 +76,12 @@ public class BrowserActivity extends AppCompatActivity
     //ControlFragment Button Click
     @Override
     public void OnClick(int btnID){
-        // click go
-//        if (btnID==R.id.btnGo) {
-//            LoadWeb(frPageControl.getURL());
-//        }else{
-//            frViewer.BackNext(btnID);
-//        }
-    }
-
-    //try to load the page
-    public void LoadWeb(String sURL) {
-//        try {
-//            frViewer.LoadPageFromURL(sURL);
-//        }
-//        catch(MalformedURLException q) {
-//            q.printStackTrace();
-//        }
+         //click go
+        if (btnID==R.id.btnGo) {
+            frPager.LoadPageFromURL(frPageControl.getURL());
+        }else{
+            frPager.BackNext(btnID);
+        }
     }
 
     //ViewerFragment OnPageChange
@@ -107,6 +96,8 @@ public class BrowserActivity extends AppCompatActivity
         outState.putAll(outState);
     }
 
-
-
+    @Override
+    public void OnNewButtonClick() {
+        frPager.AddFragment();
+    }
 }

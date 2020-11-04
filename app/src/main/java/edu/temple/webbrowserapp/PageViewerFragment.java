@@ -3,7 +3,6 @@ package edu.temple.webbrowserapp;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,10 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import java.net.MalformedURLException;
 
-/////////////////////////////OLD ONE
-
 public class PageViewerFragment extends Fragment {
-
     //var
     private WebView wbMain;
     private WebSettings webSettings;
@@ -72,7 +68,7 @@ public class PageViewerFragment extends Fragment {
             wbMain.restoreState(savedInstanceState);
         }
 
-        wbMain.loadUrl("https://www.google.com");
+        //wbMain.loadUrl("https://www.google.com");
 
         return  myFragmentView;
     }
