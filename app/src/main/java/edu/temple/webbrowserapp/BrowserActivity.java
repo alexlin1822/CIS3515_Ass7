@@ -87,22 +87,6 @@ public class BrowserActivity extends AppCompatActivity
         }
     }
 
-//    //ViewerFragment OnPageChange
-//    @Override
-//    public void OnPageChangeURL(String sURL) {
-//        frPageControl.setURL(sURL);
-//    }
-//
-//    @Override
-//    public void OnPageFinish(String sTitle) {
-//        Toast.makeText(getApplicationContext(),"OnPageFinish",Toast.LENGTH_LONG);
-//        getSupportActionBar().setTitle(sTitle);
-//        frPager.setCurrentWebTitle(sTitle);
-//        if (frPageList!=null) {
-//            frPageList.UpdateList(frPager.getWebTitleList());
-//        }
-//    }
-
     @Override
     public void OnPagerPageChangeURL(String sURL) {
         frPageControl.setURL(sURL);

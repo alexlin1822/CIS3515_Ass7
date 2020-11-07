@@ -9,6 +9,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
@@ -72,8 +74,21 @@ public class PagerFragment extends Fragment implements PageViewerFragment.OnPage
         }
 
         vp2Pager.setAdapter(new ViewPagerFragmentStateAdapter(this.getActivity(),arrgWeb));
+
+        vp2Pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                Toast.makeText(getActivity(),Integer.toString(position),Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+
         return  view;
     }
+
+
 
     @Override
     public void OnPageChangeURL(String sURL) {
