@@ -6,11 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.webkit.WebView;
 import android.widget.Toast;
-
-import java.net.MalformedURLException;
-import java.util.ArrayList;
 
 public class BrowserActivity extends AppCompatActivity
         implements PageControlFragment.OnClickListener,
@@ -19,22 +15,18 @@ public class BrowserActivity extends AppCompatActivity
             PagerFragment.OnChangeListener
 {
 
-    //private PageViewerFragment frViewer;
-    //////////////////////// New
     private PageControlFragment frPageControl;
     private BrowserControlFragment frBrowserCtrl;
     private PageListFragment frPageList;
     private PagerFragment frPager;
-    private ArrayList<PageViewerFragment> arrViewer=new ArrayList<>();
+    private boolean isLandscape;
+    //private ArrayList<PageViewerFragment> arrViewer=new ArrayList<>();
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
-
-        ArrayList<String> arrTest=new ArrayList<>();
-
 
         FragmentManager fm = getSupportFragmentManager();
         frPageControl = (PageControlFragment) fm.findFragmentById(R.id.frmPageCtrl);
@@ -59,17 +51,14 @@ public class BrowserActivity extends AppCompatActivity
             frPager.addOnChangeListener(this);
         }
 
+        isLandscape=(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT);
 
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            //portrait
-
-
-        } else {
+        if (isLandscape){
             //landscape
             frPageList=(PageListFragment) fm.findFragmentById(R.id.frmPageList);
 
             if(frPageList == null){
-                frPageList = PageListFragment.newInstance(arrTest);
+                frPageList = PageListFragment.newInstance();
                 fm.beginTransaction().add(R.id.frmPageList,frPageList).commit();
                 frPageList.addSelectListener(this);
             }
@@ -88,18 +77,26 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     @Override
-    public void OnPagerPageChangeURL(String sURL) {
+    public void OnPagerPageChangeURL(int position, String sURL) {
         frPageControl.setURL(sURL);
     }
 
     @Override
-    public void OnPagerPageFinish(String sTitle) {
-        //Toast.makeText(getApplicationContext(),"OnPageFinish",Toast.LENGTH_LONG);
+    public void OnPagerPageFinish(int position,String sTitle) {
+        Toast.makeText(getApplicationContext(),"OnPageFinish",Toast.LENGTH_LONG).show();
         getSupportActionBar().setTitle(sTitle);
-        frPager.setCurrentWebTitle(sTitle);
-        if (frPageList!=null) {
-            frPageList.UpdateList(frPager.getWebTitleList());
+        if (isLandscape) {
+            frPageList.UpdateList(position,sTitle);
         }
+    }
+
+    @Override
+    public void OnPagerChanged(int position,String sTitle,String sURL){
+        if (isLandscape){
+            frPageList.UpdateList(position,sTitle);
+        }
+        getSupportActionBar().setTitle(sTitle);
+        frPageControl.setURL(sURL);
     }
 
     @Override

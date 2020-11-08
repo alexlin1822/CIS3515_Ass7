@@ -79,7 +79,6 @@ public class PageViewerFragment extends Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             if (listener!=null){listener.OnPageFinish(view.getTitle());}
-
         }
 
         //Load page
@@ -88,6 +87,20 @@ public class PageViewerFragment extends Fragment {
             if (listener!=null){listener.OnPageChangeURL(url);}
         }
     };
+
+    public String getWebTitle(){
+        String sRtn="";
+        if (wbMain!=null)
+            sRtn=wbMain.getTitle();
+        return sRtn;
+    }
+
+    public String getUrl(){
+        String sRtn="";
+        if (wbMain!=null)
+            sRtn=wbMain.getUrl();
+        return sRtn;
+    }
 
     public void LoadPageFromURL(String sURL) throws MalformedURLException {
         if (wbMain!=null)

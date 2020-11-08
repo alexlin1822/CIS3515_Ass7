@@ -9,7 +9,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -23,12 +22,14 @@ public class PagerFragment extends Fragment implements PageViewerFragment.OnPage
         this.listener = listener;}
 
     public interface  OnChangeListener{
-        void OnPagerPageChangeURL(String sURL);
-        void OnPagerPageFinish(String sTitle);
+        void OnPagerPageChangeURL(int position, String sURL);
+        void OnPagerPageFinish(int position,String sTitle);
+        void OnPagerChanged(int position,String sTitle,String sURL);
     }
 
 
     private ViewPager2 vp2Pager;
+    private ViewPagerFragmentStateAdapter vpAdapter;
     ArrayList<String> arrgWebTitle;
     ArrayList<PageViewerFragment> arrgWeb;
 
@@ -73,32 +74,36 @@ public class PagerFragment extends Fragment implements PageViewerFragment.OnPage
             arrgWebTitle.add("");
         }
 
-        vp2Pager.setAdapter(new ViewPagerFragmentStateAdapter(this.getActivity(),arrgWeb));
+
+        vpAdapter=new ViewPagerFragmentStateAdapter(this.getActivity(),arrgWeb);
+        vp2Pager.setAdapter(vpAdapter);
 
         vp2Pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(getActivity(),Integer.toString(position),Toast.LENGTH_LONG).show();
+                if (listener!=null){
+                    listener.OnPagerChanged(position,
+                            arrgWeb.get(position).getWebTitle(),
+                            arrgWeb.get(position).getUrl());
+                }
             }
         });
-
-
-
 
         return  view;
     }
 
-
-
     @Override
     public void OnPageChangeURL(String sURL) {
-        if (listener!=null){listener.OnPagerPageChangeURL(sURL);}
+        if (listener!=null){listener.OnPagerPageChangeURL(vp2Pager.getCurrentItem(),sURL);}
     }
 
     @Override
     public void OnPageFinish(String sTitle) {
-        if (listener!=null){listener.OnPagerPageFinish(sTitle);}
+        if (listener!=null){listener.OnPagerPageFinish(vp2Pager.getCurrentItem(),sTitle);}
+        arrgWebTitle.set(vp2Pager.getCurrentItem(),sTitle);
     }
+
+
 
     public class ViewPagerFragmentStateAdapter extends FragmentStateAdapter {
         ArrayList<PageViewerFragment> arrMyWeb;
@@ -145,18 +150,17 @@ public class PagerFragment extends Fragment implements PageViewerFragment.OnPage
     //Add a new WebView fragment
     public void AddFragment(){
         arrgWeb.add(new PageViewerFragment());
+        PageViewerFragment pvfCurrent = arrgWeb.get(arrgWeb.size()-1);
+        pvfCurrent.addOnPageChangeURListener(this);
+
         arrgWebTitle.add("");
+        vpAdapter.notifyItemInserted(arrgWeb.size()- 1);
         vp2Pager.setCurrentItem(arrgWeb.size()-1);
     }
 
     //set current fragment
     public void setCurrentFragment(int position){
         vp2Pager.setCurrentItem(position);
-    }
-
-    //change current web title
-    public void setCurrentWebTitle(String sTitle){
-        arrgWebTitle.set(vp2Pager.getCurrentItem(),sTitle);
     }
 
     @Override
