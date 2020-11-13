@@ -11,12 +11,15 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
 import java.net.MalformedURLException;
 
 public class PageViewerFragment extends Fragment {
     //var
     private WebView wbMain;
     private WebSettings webSettings;
+    private int FID;
 
     //interface
     private PageViewerFragment.OnPageChangeURLListener listener;
@@ -33,10 +36,10 @@ public class PageViewerFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static PageViewerFragment newInstance(String param1) {
+    public static PageViewerFragment newInstance(int param1) {
         PageViewerFragment fragment = new PageViewerFragment();
         Bundle args = new Bundle();
-        args.putString("sgURL", param1);
+        args.putInt("FID", param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,6 +57,11 @@ public class PageViewerFragment extends Fragment {
         // Inflate the layout for this fragment
         final View myFragmentView =inflater.inflate(R.layout.fragment_page_viewer, container, false);
 
+        if (getArguments()!=null) {
+            FID = getArguments().getInt("FID");
+        }
+
+
         wbMain=(WebView)myFragmentView.findViewById(R.id.wbMain);
 
         wbMain.addJavascriptInterface(this,"android");
@@ -69,10 +77,10 @@ public class PageViewerFragment extends Fragment {
             wbMain.restoreState(savedInstanceState);
         }
 
-        //wbMain.loadUrl("https://www.google.com");
 
         return  myFragmentView;
     }
+
 
     private WebViewClient webViewClient=new WebViewClient(){
         //finished
@@ -87,6 +95,10 @@ public class PageViewerFragment extends Fragment {
             if (listener!=null){listener.OnPageChangeURL(url);}
         }
     };
+
+    public int getFID(){
+        return FID;
+    }
 
     public String getWebTitle(){
         String sRtn="";
