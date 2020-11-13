@@ -35,7 +35,6 @@ public class PageControlFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setRetainInstance(true);
     }
 
     @Override
@@ -59,9 +58,7 @@ public class PageControlFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View myFragmentView =inflater.inflate(R.layout.fragment_page_control, container, false);
-
-        return  myFragmentView;
+        return  inflater.inflate(R.layout.fragment_page_control, container, false);
     }
 
     public void setURL(String sURL){
