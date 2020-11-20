@@ -14,6 +14,7 @@ public class BrowserActivity extends AppCompatActivity
             PageListFragment.OnItemSelectedListener,
             PagerFragment.OnChangeListener
 {
+    ////////
     private FragmentManager fm;
     private PageControlFragment frPageControl;
     private BrowserControlFragment frBrowserCtrl;
