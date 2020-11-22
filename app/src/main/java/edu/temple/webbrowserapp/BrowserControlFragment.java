@@ -9,12 +9,16 @@ import android.widget.ImageButton;
 
 public class BrowserControlFragment extends Fragment {
     private ImageButton btnNew;
+    private ImageButton btnBookmark;
+    private ImageButton btnSave;
 
     //interface
     public void addNewButtonListener(BrowserControlFragment.OnNewButtonClickListener listener){this.listener = listener;}
 
     public interface OnNewButtonClickListener{
         void OnNewButtonClick();
+        void OnBookmark();
+        void OnSave();
     }
 
     private BrowserControlFragment.OnNewButtonClickListener listener;
@@ -38,6 +42,7 @@ public class BrowserControlFragment extends Fragment {
         // Inflate the layout for this fragment
         final View myFragmentView =
                 inflater.inflate(R.layout.fragment_browser_control, container, false);
+
         btnNew=myFragmentView.findViewById(R.id.btnAddPage);
         btnNew.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -45,6 +50,24 @@ public class BrowserControlFragment extends Fragment {
                 listener.OnNewButtonClick();
             }
         });
+
+        btnBookmark=myFragmentView.findViewById(R.id.btnBookmark);
+        btnBookmark.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                listener.OnBookmark();
+            }
+        });
+
+        btnSave=myFragmentView.findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                listener.OnSave();
+            }
+        });
+
+
         return myFragmentView;
     }
 }
