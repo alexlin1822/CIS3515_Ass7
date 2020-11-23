@@ -8,11 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import edu.temple.webbrowserapp.R;
 
 
 public class DeletableAdapter extends BaseAdapter{
@@ -56,12 +54,12 @@ public class DeletableAdapter extends BaseAdapter{
         View view=convertView;
         if(view==null){
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view=inflater.inflate(R.layout.row_simple_list_item_2, null);
+            view=inflater.inflate(R.layout.bookmark_adapter, null);
         }
-        final TextView textView=(TextView)view.findViewById(R.id.simple_item_1);
+        final TextView textView=(TextView)view.findViewById(R.id.txtListTitle);
         textView.setText(text.get(position));
-        final ImageView imageView=(ImageView)view.findViewById(R.id.simple_item_2);
-        imageView.setBackgroundResource(android.R.drawable.ic_delete);
+        final ImageButton imageView=(ImageButton)view.findViewById(R.id.btnDelete);
+        //imageView.setBackgroundResource(android.R.drawable.ic_delete);
         imageView.setTag(position);
         imageView.setOnClickListener(new OnClickListener() {
 

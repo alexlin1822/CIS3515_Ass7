@@ -44,15 +44,11 @@ public class BookmarksActivity extends AppCompatActivity {
 
         list_view.setAdapter(adapter);
 
-//close form button
+        //close form button
         Button btnClose = (Button) findViewById(R.id.btnClose);
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-//                text.add("10000");
-//                adapter.notifyDataSetChanged();
-
                 Intent intent = new Intent(BookmarksActivity.this,BrowserActivity.class);
                 startActivity(intent);
                 finish();

@@ -37,6 +37,7 @@ public class BrowserActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
 
+
         if (savedInstanceState!=null){
             igCurPagerID=savedInstanceState.getInt("igCurPagerID",0);
         }
@@ -48,6 +49,7 @@ public class BrowserActivity extends AppCompatActivity
 
         //bkgBookmark=new ArrayList<>();
         bkgBookmark=LoadBookmark();
+
 
         Log.v("KKK","Boomark Total="+Integer.toString(bkgBookmark.size()));
 
@@ -224,6 +226,11 @@ public class BrowserActivity extends AppCompatActivity
         editor.apply();
         return 0;
     };
+
+    @Override
+    public void onWindowFocusChanged (boolean hasFocus){
+        bkgBookmark=LoadBookmark();
+    }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
