@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -20,7 +21,8 @@ public class BrowserActivity extends AppCompatActivity
             PageListFragment.OnItemSelectedListener,
             PagerFragment.OnChangeListener
 {
-    ////////
+    private final int REQUEST_CODE=111;
+
     private FragmentManager fm;
     private PageControlFragment frPageControl;
     private BrowserControlFragment frBrowserCtrl;
@@ -149,7 +151,9 @@ public class BrowserActivity extends AppCompatActivity
 
     @Override
     public void OnBookmark(){
-        getSupportActionBar().setTitle("Bookmark");
+        Intent MyInform=new Intent (BrowserActivity.this,BookmarksActivity.class);
+        MyInform.putExtra("myID",1);
+        startActivityForResult(MyInform,REQUEST_CODE);
     }
 
     //save a new bookmark
@@ -184,13 +188,12 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     //load the bookmark
-    public ArrayList<TBookmark> LoadBookmark(){
+    private ArrayList<TBookmark> LoadBookmark(){
         ArrayList<TBookmark> arrTemp=new ArrayList<>();
 
-//        SharedPreferences pref = getSharedPreferences("MyAppInfo" , MODE_MULTI_PROCESS);
         Context context = getApplicationContext();
         SharedPreferences pref = context.getSharedPreferences("MyAppInfo",Context.MODE_PRIVATE);
-        
+
         int itotalBookmark=pref.getInt("TotalBookmark" , 0);
 
         for (int i=0; i<itotalBookmark;i++){
@@ -205,7 +208,7 @@ public class BrowserActivity extends AppCompatActivity
     };
 
     //save the bookmark
-    public int SaveBookmark(){
+    private int SaveBookmark(){
         //SharedPreferences pref = getSharedPreferences("MyAppInfo" , MODE_MULTI_PROCESS);
         Context context = getApplicationContext();
         SharedPreferences pref = context.getSharedPreferences("MyAppInfo",Context.MODE_PRIVATE);
