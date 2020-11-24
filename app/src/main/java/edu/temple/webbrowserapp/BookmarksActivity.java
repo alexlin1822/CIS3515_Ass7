@@ -3,12 +3,13 @@ package edu.temple.webbrowserapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class BookmarksActivity extends AppCompatActivity {
@@ -40,6 +41,12 @@ public class BookmarksActivity extends AppCompatActivity {
                 bkgBookmark.remove(iID);
                 SaveBookmark();
             }
+
+            @Override
+            public void OnBookmartClick(int index){
+                BrowserActivity.ToBookmark(index);
+                finish();
+            }
         });
 
         list_view.setAdapter(adapter);
@@ -49,8 +56,6 @@ public class BookmarksActivity extends AppCompatActivity {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BookmarksActivity.this,BrowserActivity.class);
-                startActivity(intent);
                 finish();
             }
         });
@@ -67,14 +72,14 @@ public class BookmarksActivity extends AppCompatActivity {
 
         for (int i=0; i<itotalBookmark;i++){
             TBookmark bkTmp=new TBookmark();
-            int iTmpID=pref.getInt("B_ID_"+Integer.toString(i),-1);
-            String iTmpTitle=pref.getString("B_Title_"+Integer.toString(i),"");
-            String iTmpURL=pref.getString("B_URL_"+Integer.toString(i),"");
+            int iTmpID=pref.getInt("B_ID_"+i,-1);
+            String iTmpTitle=pref.getString("B_Title_"+i,"");
+            String iTmpURL=pref.getString("B_URL_"+i,"");
             bkTmp.setVal(iTmpID,iTmpTitle,iTmpURL);
             arrTemp.add(bkTmp);
         }
         return arrTemp;
-    };
+    }
 
     //save the bookmark
     private int SaveBookmark(){
@@ -84,14 +89,14 @@ public class BookmarksActivity extends AppCompatActivity {
         editor.putInt("TotalBookmark" ,bkgBookmark.size());
 
         for (int i=0; i<bkgBookmark.size();i++){
-            editor.putInt("B_ID_"+Integer.toString(i),bkgBookmark.get(i).getID());
-            editor.putString("B_Title_"+Integer.toString(i),bkgBookmark.get(i).getTitle());
-            editor.putString("B_URL_"+Integer.toString(i),bkgBookmark.get(i).getURL());
+            editor.putInt("B_ID_"+i,bkgBookmark.get(i).getID());
+            editor.putString("B_Title_"+i,bkgBookmark.get(i).getTitle());
+            editor.putString("B_URL_"+i,bkgBookmark.get(i).getURL());
         }
 
         editor.apply();
         return 0;
-    };
+    }
 
     private ArrayList<String> getBookmarkTitleList(){
         ArrayList<String> arrTitle=new ArrayList<>();
@@ -100,6 +105,4 @@ public class BookmarksActivity extends AppCompatActivity {
         }
         return arrTitle;
     }
-
-
 }

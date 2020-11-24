@@ -12,7 +12,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 
 public class BrowserActivity extends AppCompatActivity
@@ -22,7 +21,6 @@ public class BrowserActivity extends AppCompatActivity
             PagerFragment.OnChangeListener
 {
     private final int REQUEST_CODE=111;
-
     private FragmentManager fm;
     private PageControlFragment frPageControl;
     private BrowserControlFragment frBrowserCtrl;
@@ -30,13 +28,17 @@ public class BrowserActivity extends AppCompatActivity
     private PagerFragment frPager;
     private int igCurPagerID;
     private ArrayList<TBookmark> bkgBookmark;
+    private static int igClickID=-1;
+
+    public static void ToBookmark(int iClick){
+        igClickID=iClick;
+    }
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        setContentView(R.layout.activity_browser);
 
         if (savedInstanceState!=null){
             igCurPagerID=savedInstanceState.getInt("igCurPagerID",0);
@@ -45,16 +47,8 @@ public class BrowserActivity extends AppCompatActivity
             igCurPagerID=0;
         }
 
-        setContentView(R.layout.activity_browser);
-
-        //bkgBookmark=new ArrayList<>();
         bkgBookmark=LoadBookmark();
-
-
-        Log.v("KKK","Boomark Total="+Integer.toString(bkgBookmark.size()));
-
         fm = getSupportFragmentManager();
-
         Fragment tmpFragment;
 
         //BrowserCtrl -> Add New page Button
@@ -200,14 +194,14 @@ public class BrowserActivity extends AppCompatActivity
 
         for (int i=0; i<itotalBookmark;i++){
             TBookmark bkTmp=new TBookmark();
-            int iTmpID=pref.getInt("B_ID_"+Integer.toString(i),-1);
-            String iTmpTitle=pref.getString("B_Title_"+Integer.toString(i),"");
-            String iTmpURL=pref.getString("B_URL_"+Integer.toString(i),"");
+            int iTmpID=pref.getInt("B_ID_"+i,-1);
+            String iTmpTitle=pref.getString("B_Title_"+i,"");
+            String iTmpURL=pref.getString("B_URL_"+i,"");
             bkTmp.setVal(iTmpID,iTmpTitle,iTmpURL);
             arrTemp.add(bkTmp);
         }
         return arrTemp;
-    };
+    }
 
     //save the bookmark
     private int SaveBookmark(){
@@ -218,18 +212,23 @@ public class BrowserActivity extends AppCompatActivity
         editor.putInt("TotalBookmark" ,bkgBookmark.size());
 
         for (int i=0; i<bkgBookmark.size();i++){
-            editor.putInt("B_ID_"+Integer.toString(i),bkgBookmark.get(i).getID());
-            editor.putString("B_Title_"+Integer.toString(i),bkgBookmark.get(i).getTitle());
-            editor.putString("B_URL_"+Integer.toString(i),bkgBookmark.get(i).getURL());
+            editor.putInt("B_ID_"+i,bkgBookmark.get(i).getID());
+            editor.putString("B_Title_"+i,bkgBookmark.get(i).getTitle());
+            editor.putString("B_URL_"+i,bkgBookmark.get(i).getURL());
         }
 
         editor.apply();
         return 0;
-    };
+    }
 
     @Override
     public void onWindowFocusChanged (boolean hasFocus){
         bkgBookmark=LoadBookmark();
+        if (hasFocus && (igClickID>=0)){
+            //Log.v("KKK","onWindowFocusChanged="+Integer.toString(igClickID));
+            frPager.LoadPageFromURL(bkgBookmark.get(igClickID).getURL());
+            igClickID=-1;
+        }
     }
 
     @Override
