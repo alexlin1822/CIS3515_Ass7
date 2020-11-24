@@ -1,15 +1,12 @@
 package edu.temple.webbrowserapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 
 public class BookmarksActivity extends AppCompatActivity {
@@ -24,9 +21,7 @@ public class BookmarksActivity extends AppCompatActivity {
         ListView list_view = (ListView) findViewById(R.id.list_view);
 
         getSupportActionBar().setTitle("Bookmark List");
-
         bkgBookmark=LoadBookmark();
-
         arrgBookmartTitle = new ArrayList<String>();
 
         for (int i=0;i<bkgBookmark.size();i++){
@@ -64,7 +59,6 @@ public class BookmarksActivity extends AppCompatActivity {
     //load the bookmark
     private ArrayList<TBookmark> LoadBookmark(){
         ArrayList<TBookmark> arrTemp=new ArrayList<>();
-
         Context context = getApplicationContext();
         SharedPreferences pref = context.getSharedPreferences("MyAppInfo",Context.MODE_PRIVATE);
 

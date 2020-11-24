@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class DeletableAdapter extends BaseAdapter{
@@ -57,7 +58,7 @@ public class DeletableAdapter extends BaseAdapter{
                 mAttentionClickListener.OnBookmartClick(index);
             }
         });
-        final ImageButton btnDelete=(ImageButton)view.findViewById(R.id.btnDelete);
+        final ImageView btnDelete=(ImageView)view.findViewById(R.id.btnDelete);
         btnDelete.setTag(position);
         btnDelete.setOnClickListener(new OnClickListener() {
 

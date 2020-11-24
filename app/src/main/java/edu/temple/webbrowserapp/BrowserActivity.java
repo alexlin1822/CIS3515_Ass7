@@ -81,7 +81,6 @@ public class BrowserActivity extends AppCompatActivity
             fm.beginTransaction()
                     .add(R.id.frmViewPager, frPager)
                     .commit();
-
         }
         frPager.addOnChangeListener(this);
 
@@ -91,7 +90,6 @@ public class BrowserActivity extends AppCompatActivity
                 frPageList = (PageListFragment) tmpFragment;
             }
             else {
-
                 frPageList = PageListFragment.newInstance(frPager.getWebTitleList());
                 fm.beginTransaction()
                         .add(R.id.frmPageList, frPageList)
@@ -225,7 +223,6 @@ public class BrowserActivity extends AppCompatActivity
     public void onWindowFocusChanged (boolean hasFocus){
         bkgBookmark=LoadBookmark();
         if (hasFocus && (igClickID>=0)){
-            //Log.v("KKK","onWindowFocusChanged="+Integer.toString(igClickID));
             frPager.LoadPageFromURL(bkgBookmark.get(igClickID).getURL());
             igClickID=-1;
         }

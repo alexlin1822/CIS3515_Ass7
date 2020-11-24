@@ -1,5 +1,6 @@
 package edu.temple.webbrowserapp;
 
+//Bookmart struct
 public class TBookmark {
     private int igID;
     private String sgTitle;
