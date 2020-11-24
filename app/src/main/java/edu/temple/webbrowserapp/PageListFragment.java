@@ -51,7 +51,6 @@ public class PageListFragment extends Fragment {
         lstPage=(ListView) myFragmentView.findViewById(R.id.lstPage);
         lstgWebTitle=new ArrayList<>();
 
-
         if (getArguments()!=null) {
             ArrayList<String> arrTemp=new ArrayList<>();
             arrTemp = getArguments().getStringArrayList("WebTitle");
@@ -90,8 +89,6 @@ public class PageListFragment extends Fragment {
                     lstgWebTitle.set(i,arrWebTitle.get(i));
                 }
             }
-
         adpList.notifyDataSetChanged();
-
     }
 }
