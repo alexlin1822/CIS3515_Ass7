@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -18,11 +22,11 @@ public class BookmarksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmarks);
-        ListView list_view = (ListView) findViewById(R.id.list_view);
+        ListView list_view = findViewById(R.id.list_view);
 
         getSupportActionBar().setTitle("Bookmark List");
         bkgBookmark=LoadBookmark();
-        arrgBookmartTitle = new ArrayList<String>();
+        arrgBookmartTitle = new ArrayList<>();
 
         for (int i=0;i<bkgBookmark.size();i++){
             arrgBookmartTitle.add(bkgBookmark.get(i).getTitle());
@@ -47,7 +51,7 @@ public class BookmarksActivity extends AppCompatActivity {
         list_view.setAdapter(adapter);
 
         //close form button
-        Button btnClose = (Button) findViewById(R.id.btnClose);
+        Button btnClose = findViewById(R.id.btnClose);
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,4 +103,6 @@ public class BookmarksActivity extends AppCompatActivity {
         }
         return arrTitle;
     }
+
+
 }

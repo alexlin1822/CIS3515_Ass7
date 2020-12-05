@@ -11,6 +11,9 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 import java.util.ArrayList;
 
@@ -226,6 +229,37 @@ public class BrowserActivity extends AppCompatActivity
             frPager.LoadPageFromURL(bkgBookmark.get(igClickID).getURL());
             igClickID=-1;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu, menu);//引用menu布局文件R.menu.main
+        return true;
+    }
+
+    // share button click function
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if (item.getItemId()==R.id.btnShare){
+            String sWeb=frPager.getCurItemURL();
+            String sTt=frPager.getCurItemTitle();
+            if ((sWeb==null) || (sTt==null)){
+                Toast.makeText(getApplicationContext(),
+                        "Website not open yet! Please open a website before share.",
+                        Toast.LENGTH_LONG).show();
+            }
+            else {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, sTt+" - "+sWeb);
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
