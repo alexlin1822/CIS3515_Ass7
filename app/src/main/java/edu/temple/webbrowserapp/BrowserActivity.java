@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -32,6 +33,7 @@ public class BrowserActivity extends AppCompatActivity
     private int igCurPagerID;
     private ArrayList<TBookmark> bkgBookmark;
     private static int igClickID=-1;
+    private static String sStartWeb="";
 
     public static void ToBookmark(int iClick){
         igClickID=iClick;
@@ -42,7 +44,6 @@ public class BrowserActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
-
         if (savedInstanceState!=null){
             igCurPagerID=savedInstanceState.getInt("igCurPagerID",0);
         }
@@ -99,6 +100,14 @@ public class BrowserActivity extends AppCompatActivity
                         .commit();
             }
             frPageList.addSelectListener(this);
+        }
+
+        // Get the intent that started this activity
+        Intent intent = getIntent();
+        Uri data = intent.getData();
+
+        if (data!=null) {
+            sStartWeb=data.toString();
         }
     }
 
@@ -229,6 +238,12 @@ public class BrowserActivity extends AppCompatActivity
             frPager.LoadPageFromURL(bkgBookmark.get(igClickID).getURL());
             igClickID=-1;
         }
+        if (!sStartWeb.equals("")){
+            frPageControl.setURL(sStartWeb);
+            frPager.LoadPageFromURL(sStartWeb);
+            sStartWeb="";
+
+        }
     }
 
     @Override
@@ -246,7 +261,7 @@ public class BrowserActivity extends AppCompatActivity
             String sTt=frPager.getCurItemTitle();
             if ((sWeb==null) || (sTt==null)){
                 Toast.makeText(getApplicationContext(),
-                        "Website not open yet! Please open a website before share.",
+                        "Website not open yet!\nPlease open a website before share.",
                         Toast.LENGTH_LONG).show();
             }
             else {
