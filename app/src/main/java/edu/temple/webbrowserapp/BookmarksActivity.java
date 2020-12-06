@@ -4,10 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -95,14 +91,4 @@ public class BookmarksActivity extends AppCompatActivity {
         editor.apply();
         return 0;
     }
-
-    private ArrayList<String> getBookmarkTitleList(){
-        ArrayList<String> arrTitle=new ArrayList<>();
-        for (int i=0;i<bkgBookmark.size();i++){
-            arrTitle.add(bkgBookmark.get(i).getTitle());
-        }
-        return arrTitle;
-    }
-
-
 }

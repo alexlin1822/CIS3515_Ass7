@@ -242,7 +242,6 @@ public class BrowserActivity extends AppCompatActivity
             frPageControl.setURL(sStartWeb);
             frPager.LoadPageFromURL(sStartWeb);
             sStartWeb="";
-
         }
     }
 
